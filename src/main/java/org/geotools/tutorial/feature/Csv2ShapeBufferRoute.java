@@ -70,20 +70,20 @@ public class Csv2ShapeBufferRoute {
 				if (line.trim().length() > 0) {
 					String[] tokens = line.split("\\,"); //쉽게 말해 tokens은 load한 csv 데이터프레임
 					
-					double latitude = Double.parseDouble(tokens[2]);
-					double longitude = Double.parseDouble(tokens[3]);
-					String city = tokens[4].trim();
-					int number = Integer.parseInt(tokens[5].trim());
-					int year = Integer.parseInt(tokens[6].trim());
+					double latitude = Double.parseDouble(tokens[1]);
+					double longitude = Double.parseDouble(tokens[2]);
+					String date = tokens[0].trim();
+					int pressure = Integer.parseInt(tokens[3].trim());
+					int speed = Integer.parseInt(tokens[4].trim());
 					
 					Point point = geometryFactory.createPoint(new Coordinate(longitude, latitude)); //(lon,lat)=(경,위도)=(x,y)
 					Geometry polygon = point.buffer(bufferSize); //point geometry에 대해서 buffer를 줌
 					
 					featureBuilder.add(polygon); //정의한 polygon을 feature에 집어 넣음
 //					featureBuilder.add(point);
-					featureBuilder.add(city);
-					featureBuilder.add(number);
-					featureBuilder.add(year);
+					featureBuilder.add(date);
+					featureBuilder.add(pressure);
+					featureBuilder.add(speed);
 					
 					SimpleFeature feature = featureBuilder.buildFeature(null);
 					features.add(feature);
@@ -156,9 +156,9 @@ public class Csv2ShapeBufferRoute {
 		//필드 정의
 //		builder.add("the_geom", Point.class); //geometry를 point로
 		builder.add("the_geom", Polygon.class); //geometry를 polygon타입으로
-		builder.length(15).add("city", String.class); //shp의 최대 글자 길이수...
-		builder.add("number", Integer.class);
-		builder.add("year", Integer.class);
+		builder.length(15).add("date", String.class); //shp의 최대 글자 길이수...
+		builder.add("pressure", Integer.class);
+		builder.add("speed", Integer.class);
 		
 		//Type 빌드
 		final SimpleFeatureType LOCATION = builder.buildFeatureType();
