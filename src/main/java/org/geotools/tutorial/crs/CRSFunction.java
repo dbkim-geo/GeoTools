@@ -46,14 +46,14 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.util.ProgressListener;
 
-public class CRSLabAnotherButton {
+public class CRSFunction {
 
 	private File sourceFile;
 	private SimpleFeatureSource featureSource;
 	private MapContent map;
 	
 	public static void main(String[] args) throws Exception{
-		CRSLabAnotherButton lab = new CRSLabAnotherButton();
+		CRSFunction lab = new CRSFunction();
 		lab.displayShapefile();
 	}
 
@@ -90,7 +90,7 @@ public class CRSLabAnotherButton {
 		toolbar.addSeparator();
 		toolbar.add(new JButton(new ValidateGeometryAction())); //Geometry 유효성 검사 기능 버튼
 		toolbar.add(new JButton(new ExportShapefileAction())); //Reproject된 feature를 export하는 기능 버튼
-
+		toolbar.add(new JButton(new ShowCRSasWKTAction()));
 		mapFrame.setSize(800, 600);
 		mapFrame.setVisible(true);
 	}
@@ -230,8 +230,29 @@ public class CRSLabAnotherButton {
 			    }
 			
 		}
+	
 		
 		
+	}
+	
+	/*
+	 * CRS를 WKT 형식으로 표출하는 기능
+	 * */
+	class ShowCRSasWKTAction extends SafeAction {
+		ShowCRSasWKTAction(){
+			super("Coordinate Reference System");
+			putValue(Action.SHORT_DESCRIPTION, "Show Coordinate Reference System as WKT");
+		}
+		public void action(ActionEvent e) throws Throwable {
+			showCRSasWKT();
+		}
+		private void showCRSasWKT() throws Exception {
+			// TODO Auto-generated method stub
+			SimpleFeatureType schema = featureSource.getSchema();
+			CoordinateReferenceSystem dataCRS = schema.getCoordinateReferenceSystem();
+			JOptionPane.showMessageDialog(null, dataCRS, "Coordinate Reference System", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 	}
 	
 }

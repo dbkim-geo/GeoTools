@@ -41,8 +41,8 @@ public class Csv2ShapeBufferRoute {
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
 		
-		File file = JFileDataStoreChooser.showOpenFile("csv", null);
-		if (file == null) {
+		File oldFile = JFileDataStoreChooser.showOpenFile("csv", null);
+		if (oldFile == null) {
 			return;
 		}
 		
@@ -61,7 +61,7 @@ public class Csv2ShapeBufferRoute {
 		
 		SimpleFeatureBuilder featureBuilder = new SimpleFeatureBuilder(TYPE);
 		
-		try (BufferedReader reader = new BufferedReader(new FileReader(file))){
+		try (BufferedReader reader = new BufferedReader(new FileReader(oldFile))){
 			String line = reader.readLine();
 			System.out.println("Header : "+line);
 			
@@ -96,7 +96,7 @@ public class Csv2ShapeBufferRoute {
 		/*
 		 * FeatureCollection으로부터 shp 생성
 		 * */
-		File newFile = getNewShapeFile(file);
+		File newFile = getNewShapeFile(oldFile);
 		
 		ShapefileDataStoreFactory dataStoreFactory = new ShapefileDataStoreFactory();
 		
